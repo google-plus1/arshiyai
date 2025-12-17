@@ -1,358 +1,1172 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Arshiya Ai</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Arshiya Ai</title>
+  <style>
+    :root{
+      --bg0:#07080c;
+      --bg1:#0b0d14;
+      --panel: rgba(255,255,255,.06);
+      --panel2: rgba(255,255,255,.09);
+      --stroke: rgba(255,255,255,.10);
+      --stroke2: rgba(255,255,255,.16);
+      --txt: rgba(255,255,255,.92);
+      --muted: rgba(255,255,255,.60);
+      --muted2: rgba(255,255,255,.45);
+      --a:#8b7bff;
+      --b:#22d3ee;
+      --c:#34d399;
+      --bad:#ff5b7a;
+      --warn:#ffc36a;
+      --good:#54f0c1;
+      --r: 18px;
+      --r2: 24px;
+      --shadow: 0 24px 80px rgba(0,0,0,.55);
+      --shadow2: 0 10px 30px rgba(0,0,0,.40);
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+    }
 
-<style>
-:root{
-  --bg:#05060b;
-  --panel:rgba(255,255,255,.06);
-  --stroke:rgba(255,255,255,.12);
-  --txt:#f5f7fb;
-  --muted:#a8b0c3;
-  --a:#8b7bff;
-  --b:#22d3ee;
-}
+    *{ box-sizing:border-box; }
+    html,body{ height:100%; }
+    body{
+      margin:0;
+      font-family: var(--sans);
+      color: var(--txt);
+      background:
+        radial-gradient(900px 520px at 18% 10%, rgba(139,123,255,.17), transparent 60%),
+        radial-gradient(700px 480px at 85% 18%, rgba(34,211,238,.14), transparent 62%),
+        radial-gradient(900px 600px at 60% 92%, rgba(52,211,153,.11), transparent 66%),
+        linear-gradient(180deg, var(--bg0), var(--bg1));
+      overflow:hidden;
+    }
 
-*{box-sizing:border-box}
-body{
-  margin:0;
-  height:100vh;
-  font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
-  color:var(--txt);
-  background:
-    radial-gradient(800px 500px at 15% 10%, rgba(139,123,255,.18), transparent 60%),
-    radial-gradient(700px 450px at 85% 20%, rgba(34,211,238,.16), transparent 62%),
-    linear-gradient(180deg,#05060b,#070912);
-}
+    .app{
+      height:100%;
+      display:grid;
+      grid-template-columns: 320px 1fr;
+    }
 
-.app{
-  height:100%;
-  display:grid;
-  grid-template-columns:320px 1fr;
-  gap:14px;
-  padding:14px;
-}
+    /* Sidebar */
+    .side{
+      border-right: 1px solid rgba(255,255,255,.08);
+      background: rgba(0,0,0,.20);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      display:flex;
+      flex-direction:column;
+      min-width: 280px;
+    }
 
-.card{
-  background:var(--panel);
-  border:1px solid var(--stroke);
-  border-radius:24px;
-  backdrop-filter:blur(14px);
-}
+    .sideTop{
+      padding:16px;
+      border-bottom: 1px solid rgba(255,255,255,.08);
+      display:flex;
+      gap:12px;
+      align-items:center;
+    }
 
-.sidebar{
-  padding:16px;
-  display:flex;
-  flex-direction:column;
-  gap:16px;
-}
+    .mark{
+      width:44px; height:44px;
+      border-radius: 16px;
+      background: conic-gradient(from 220deg, var(--a), var(--b), var(--c), var(--a));
+      box-shadow: 0 14px 34px rgba(0,0,0,.5);
+      position:relative;
+      flex: 0 0 auto;
+    }
+    .mark:after{
+      content:"";
+      position:absolute; inset:3px;
+      border-radius: 14px;
+      background: rgba(0,0,0,.35);
+      border: 1px solid rgba(255,255,255,.14);
+      backdrop-filter: blur(10px);
+    }
 
-.brand{
-  display:flex;
-  align-items:center;
-  gap:12px;
-  padding:12px;
-  border-radius:18px;
-  border:1px solid var(--stroke);
-}
+    .brandText{ min-width:0; }
+    .brandText .name{
+      font-weight: 820;
+      letter-spacing: .3px;
+      font-size: 14px;
+      line-height: 1.2;
+      margin:0;
+    }
+    .brandText .tag{
+      margin:2px 0 0;
+      font-size: 12px;
+      color: var(--muted);
+      white-space: nowrap;
+      overflow:hidden;
+      text-overflow: ellipsis;
+    }
 
-.logo{
-  width:42px;height:42px;
-  border-radius:14px;
-  background:conic-gradient(from 220deg,var(--a),var(--b),var(--a));
-}
+    .sideActions{
+      padding: 0 16px 14px;
+      display:flex;
+      gap:10px;
+    }
+    .btn{
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
+      color: var(--txt);
+      border-radius: 14px;
+      padding: 10px 12px;
+      cursor:pointer;
+      font-weight: 720;
+      letter-spacing:.2px;
+      box-shadow: var(--shadow2);
+      transition: transform .08s ease, background .2s ease, border-color .2s ease;
+      user-select:none;
+    }
+    .btn:hover{ background: rgba(255,255,255,.08); border-color: rgba(255,255,255,.20); }
+    .btn:active{ transform: translateY(1px); }
+    .btn.primary{
+      background: linear-gradient(135deg, rgba(139,123,255,.30), rgba(34,211,238,.20));
+      border-color: rgba(255,255,255,.18);
+    }
+    .btn.ghost{
+      background: rgba(255,255,255,.04);
+      box-shadow:none;
+    }
 
-.brand h1{
-  margin:0;
-  font-size:16px;
-  letter-spacing:.3px;
-}
+    .threads{
+      padding: 8px 10px 14px;
+      overflow:auto;
+      flex:1;
+    }
+    .threads::-webkit-scrollbar{ width: 10px; }
+    .threads::-webkit-scrollbar-thumb{ background: rgba(255,255,255,.10); border-radius: 999px; }
 
-.small{
-  font-size:12px;
-  color:var(--muted);
-}
+    .thread{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      padding:10px 10px;
+      border-radius: 14px;
+      border:1px solid transparent;
+      cursor:pointer;
+      color: rgba(255,255,255,.86);
+      background: transparent;
+      transition: background .2s ease, border-color .2s ease;
+    }
+    .thread:hover{ background: rgba(255,255,255,.05); }
+    .thread.on{
+      background: rgba(255,255,255,.06);
+      border-color: rgba(255,255,255,.12);
+    }
+    .thread .dot{
+      width:8px;height:8px;border-radius:999px;
+      background: rgba(255,255,255,.20);
+      box-shadow: 0 0 0 4px rgba(255,255,255,.03);
+      flex:0 0 auto;
+    }
+    .thread.on .dot{
+      background: rgba(34,211,238,.8);
+      box-shadow: 0 0 0 4px rgba(34,211,238,.10);
+    }
+    .thread .title{
+      font-size: 13px;
+      line-height: 1.2;
+      white-space: nowrap;
+      overflow:hidden;
+      text-overflow: ellipsis;
+      flex:1;
+      min-width:0;
+    }
+    .thread .meta{
+      font-size: 11px;
+      color: var(--muted2);
+      flex:0 0 auto;
+    }
 
-.box{
-  padding:12px;
-  border-radius:18px;
-  border:1px solid var(--stroke);
-}
+    .sideBottom{
+      padding: 14px 16px;
+      border-top: 1px solid rgba(255,255,255,.08);
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      background: rgba(0,0,0,.16);
+    }
 
-label{
-  font-size:12px;
-  color:var(--muted);
-  display:block;
-  margin-bottom:6px;
-}
+    .field label{
+      display:block;
+      font-size: 11px;
+      color: var(--muted);
+      margin-bottom:6px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+    .field input, .field select{
+      width:100%;
+      padding:10px 10px;
+      border-radius: 14px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.28);
+      color: var(--txt);
+      outline:none;
+    }
+    .field input::placeholder{ color: rgba(255,255,255,.35); }
 
-input,select{
-  width:100%;
-  padding:10px;
-  border-radius:14px;
-  border:1px solid var(--stroke);
-  background:rgba(0,0,0,.25);
-  color:var(--txt);
-}
+    .status{
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.35;
+      white-space: pre-wrap;
+      padding: 10px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(0,0,0,.20);
+    }
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      font-size: 12px;
+      color: var(--muted);
+      padding: 8px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.05);
+    }
+    .led{
+      width:8px;height:8px;border-radius:999px;
+      background: rgba(255,255,255,.20);
+      box-shadow: 0 0 0 4px rgba(255,255,255,.03);
+    }
+    .led.good{ background: var(--good); box-shadow: 0 0 0 4px rgba(84,240,193,.10); }
+    .led.warn{ background: var(--warn); box-shadow: 0 0 0 4px rgba(255,195,106,.10); }
+    .led.bad{ background: var(--bad); box-shadow: 0 0 0 4px rgba(255,91,122,.12); }
 
-button{
-  width:100%;
-  padding:10px 12px;
-  margin-top:10px;
-  border-radius:16px;
-  border:1px solid var(--stroke);
-  background:linear-gradient(135deg,rgba(139,123,255,.35),rgba(34,211,238,.25));
-  color:white;
-  font-weight:700;
-  cursor:pointer;
-}
+    /* Main */
+    .main{
+      display:flex;
+      flex-direction:column;
+      overflow:hidden;
+    }
 
-.main{
-  display:flex;
-  flex-direction:column;
-  overflow:hidden;
-}
+    .topbar{
+      padding: 14px 18px;
+      border-bottom: 1px solid rgba(255,255,255,.08);
+      background: rgba(0,0,0,.16);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+    }
 
-.top{
-  padding:14px 16px;
-  border-bottom:1px solid var(--stroke);
-  display:flex;
-  justify-content:space-between;
-}
+    .topbar .left{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      min-width:0;
+    }
+    .topTitle{
+      min-width:0;
+    }
+    .topTitle .h{
+      margin:0;
+      font-size: 14px;
+      font-weight: 820;
+      letter-spacing: .2px;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow: ellipsis;
+    }
+    .topTitle .s{
+      margin:2px 0 0;
+      font-size: 12px;
+      color: var(--muted);
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow: ellipsis;
+    }
 
-.arena{
-  flex:1;
-  overflow:auto;
-  padding:18px;
-}
+    .controls{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      flex-wrap: wrap;
+      justify-content:flex-end;
+    }
 
-.msg{
-  max-width:900px;
-  margin:0 auto 14px;
-  display:flex;
-  gap:10px;
-}
+    .toggle{
+      display:flex;
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 999px;
+      overflow:hidden;
+      background: rgba(255,255,255,.04);
+    }
+    .toggle button{
+      border:0;
+      background: transparent;
+      color: var(--muted);
+      padding: 8px 10px;
+      cursor:pointer;
+      font-weight: 750;
+    }
+    .toggle button.on{
+      background: rgba(255,255,255,.08);
+      color: var(--txt);
+    }
 
-.avatar{
-  width:36px;height:36px;
-  border-radius:14px;
-  border:1px solid var(--stroke);
-  display:grid;
-  place-items:center;
-}
+    .arena{
+      flex:1;
+      overflow:auto;
+      padding: 18px 18px 6px;
+    }
+    .arena::-webkit-scrollbar{ width: 10px; }
+    .arena::-webkit-scrollbar-thumb{ background: rgba(255,255,255,.10); border-radius: 999px; }
 
-.bubble{
-  flex:1;
-  border-radius:18px;
-  border:1px solid var(--stroke);
-  overflow:hidden;
-}
+    .wrap{
+      max-width: 900px;
+      margin: 0 auto;
+    }
 
-.meta{
-  padding:8px 12px;
-  font-size:12px;
-  color:var(--muted);
-  border-bottom:1px solid var(--stroke);
-}
+    .msg{
+      display:flex;
+      gap:12px;
+      margin: 0 0 14px;
+      align-items:flex-start;
+    }
+    .av{
+      width: 34px; height: 34px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.05);
+      display:grid;
+      place-items:center;
+      flex: 0 0 auto;
+      box-shadow: 0 12px 28px rgba(0,0,0,.35);
+    }
+    .av .mini{
+      width: 16px; height: 16px;
+      border-radius: 8px;
+      background: conic-gradient(from 220deg, var(--a), var(--b), var(--c), var(--a));
+      opacity:.9;
+    }
 
-.body{
-  padding:12px;
-  white-space:pre-wrap;
-  line-height:1.55;
-}
+    .bubble{
+      flex:1;
+      border-radius: var(--r2);
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.05);
+      box-shadow: 0 14px 38px rgba(0,0,0,.35);
+      overflow:hidden;
+    }
+    .bubble.user{
+      background: rgba(139,123,255,.09);
+      border-color: rgba(139,123,255,.22);
+    }
+    .bubble.ai{
+      background: rgba(34,211,238,.06);
+      border-color: rgba(34,211,238,.18);
+    }
 
-.user{background:rgba(139,123,255,.10)}
-.ai{background:rgba(34,211,238,.08)}
+    .bubble .meta{
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      padding: 10px 12px;
+      font-size: 12px;
+      color: var(--muted);
+      background: rgba(0,0,0,.18);
+      border-bottom: 1px solid rgba(255,255,255,.08);
+    }
+    .bubble .meta strong{ color: var(--txt); font-weight: 800; }
+    .bubble .body{
+      padding: 12px 12px 14px;
+      font-size: 14px;
+      line-height: 1.6;
+      color: rgba(255,255,255,.90);
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
 
-.images{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:10px;
-  margin-top:10px;
-}
+    .imgGrid{
+      display:grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap:10px;
+      margin-top:10px;
+    }
+    .imgCard{
+      border-radius: 16px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(0,0,0,.18);
+      overflow:hidden;
+    }
+    .imgCard img{ width:100%; display:block; }
+    .imgCard .cap{
+      padding: 10px 12px;
+      font-size: 12px;
+      color: var(--muted);
+      border-top:1px solid rgba(255,255,255,.08);
+    }
 
-.images img{
-  width:100%;
-  border-radius:14px;
-}
+    .composer{
+      border-top: 1px solid rgba(255,255,255,.08);
+      background: rgba(0,0,0,.16);
+      padding: 14px 18px 16px;
+    }
+    .composer .row{
+      max-width: 900px;
+      margin: 0 auto;
+      display:grid;
+      grid-template-columns: 1fr auto;
+      gap: 10px;
+      align-items:end;
+    }
+    textarea{
+      width:100%;
+      resize:none;
+      min-height: 54px;
+      max-height: 180px;
+      padding: 12px 12px;
+      border-radius: 18px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.30);
+      color: var(--txt);
+      outline:none;
+      font-size: 14px;
+      line-height: 1.45;
+      box-shadow: 0 10px 28px rgba(0,0,0,.28);
+    }
+    textarea::placeholder{ color: rgba(255,255,255,.35); }
+    .sendStack{
+      display:flex;
+      flex-direction:column;
+      gap: 8px;
+      align-items:stretch;
+    }
 
-.composer{
-  padding:14px;
-  border-top:1px solid var(--stroke);
-}
+    .hint{
+      font-size: 11px;
+      color: var(--muted2);
+      text-align:right;
+      padding-right: 2px;
+    }
 
-.row{
-  max-width:950px;
-  margin:0 auto;
-  display:grid;
-  grid-template-columns:1fr auto;
-  gap:10px;
-}
+    .typing{
+      display:inline-flex;
+      gap:6px;
+      align-items:center;
+    }
+    .b{
+      width:7px;height:7px;border-radius:999px;
+      background: rgba(255,255,255,.45);
+      animation: bounce 1s infinite ease-in-out;
+    }
+    .b:nth-child(2){ animation-delay:.12s; }
+    .b:nth-child(3){ animation-delay:.24s; }
+    @keyframes bounce{
+      0%, 80%, 100% { transform: translateY(0); opacity:.45; }
+      40% { transform: translateY(-5px); opacity:.9; }
+    }
 
-textarea{
-  width:100%;
-  min-height:56px;
-  max-height:160px;
-  resize:none;
-  padding:12px;
-  border-radius:18px;
-  border:1px solid var(--stroke);
-  background:rgba(0,0,0,.25);
-  color:var(--txt);
-}
-</style>
+    .menuBtn{
+      width:auto;
+      padding: 10px 12px;
+      border-radius: 14px;
+    }
+
+    /* Mobile */
+    @media (max-width: 980px){
+      body{ overflow:auto; }
+      .app{ grid-template-columns: 1fr; }
+      .side{ display:none; }
+      .topbar{ position: sticky; top: 0; z-index: 10; }
+    }
+  </style>
 </head>
-
 <body>
-<div class="app">
-
-  <!-- SIDEBAR -->
-  <aside class="card sidebar">
-    <div class="brand">
-      <div class="logo"></div>
-      <div>
-        <h1>Arshiya Ai</h1>
-        <div class="small">Custom assistant</div>
+  <div class="app">
+    <!-- Sidebar -->
+    <aside class="side">
+      <div class="sideTop">
+        <div class="mark" aria-hidden="true"></div>
+        <div class="brandText">
+          <p class="name">Arshiya Ai</p>
+          <p class="tag">Personal assistant workspace</p>
+        </div>
       </div>
-    </div>
 
-    <div class="box">
-      <label>OpenAI API Key</label>
-      <input id="key" type="password" placeholder="sk-..." />
-      <button onclick="saveKey()">Save Key</button>
-      <div class="small" id="status">Not connected</div>
-    </div>
-
-    <div class="box">
-      <label>Mode</label>
-      <select id="mode">
-        <option value="chat">Chat</option>
-        <option value="image">Image</option>
-      </select>
-    </div>
-  </aside>
-
-  <!-- MAIN -->
-  <main class="card main">
-    <div class="top">
-      <div>Arshiya Ai</div>
-      <div class="small">Live AI</div>
-    </div>
-
-    <div class="arena" id="arena"></div>
-
-    <div class="composer">
-      <div class="row">
-        <textarea id="input" placeholder="Type here..."></textarea>
-        <button onclick="send()">Send</button>
+      <div class="sideActions">
+        <button class="btn primary" id="newThreadBtn">New chat</button>
+        <button class="btn ghost" id="renameThreadBtn">Rename</button>
+        <button class="btn ghost" id="deleteThreadBtn">Delete</button>
       </div>
-    </div>
-  </main>
-</div>
+
+      <div class="threads" id="threads"></div>
+
+      <div class="sideBottom">
+        <div class="badge" title="Connection status">
+          <span class="led warn" id="led"></span>
+          <span id="connText">Not connected</span>
+        </div>
+
+        <div class="field">
+          <label for="apiKey">API Key (demo)</label>
+          <input id="apiKey" type="password" placeholder="sk-..." autocomplete="off"/>
+        </div>
+
+        <div class="field">
+          <label for="textModel">Text model</label>
+          <select id="textModel">
+            <option value="gpt-5.2">gpt-5.2</option>
+            <option value="gpt-5">gpt-5</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="imageModel">Image model</label>
+          <select id="imageModel">
+            <option value="gpt-image-1">gpt-image-1</option>
+            <option value="gpt-image-1-mini">gpt-image-1-mini</option>
+            <option value="gpt-image-1.5">gpt-image-1.5</option>
+          </select>
+        </div>
+
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+          <div class="field">
+            <label for="imgSize">Size</label>
+            <select id="imgSize">
+              <option value="1024x1024">1024×1024</option>
+              <option value="1536x1024">1536×1024</option>
+              <option value="1024x1536">1024×1536</option>
+              <option value="auto">auto</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="imgCount">Count</label>
+            <select id="imgCount">
+              <option value="1">1</option>
+              <option value="2" selected>2</option>
+              <option value="4">4</option>
+            </select>
+          </div>
+        </div>
+
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+          <div class="field">
+            <label for="imgQuality">Quality</label>
+            <select id="imgQuality">
+              <option value="auto" selected>auto</option>
+              <option value="high">high</option>
+              <option value="medium">medium</option>
+              <option value="low">low</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="imgBackground">Background</label>
+            <select id="imgBackground">
+              <option value="auto" selected>auto</option>
+              <option value="opaque">opaque</option>
+              <option value="transparent">transparent</option>
+            </select>
+          </div>
+        </div>
+
+        <button class="btn" id="saveKeyBtn">Save key</button>
+        <button class="btn ghost" id="testBtn">Test</button>
+
+        <div class="status" id="statusBox">
+Not connected. Add a key and press Test.
+(For public sites: do not expose keys client-side.)
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main -->
+    <main class="main">
+      <div class="topbar">
+        <div class="left">
+          <div class="av" aria-hidden="true"><div class="mini"></div></div>
+          <div class="topTitle">
+            <p class="h" id="activeTitle">New chat</p>
+            <p class="s" id="activeSub">Chat or generate images. No logos. Your styling.</p>
+          </div>
+        </div>
+
+        <div class="controls">
+          <div class="toggle" role="tablist" aria-label="Mode">
+            <button id="modeChat" class="on" type="button">Chat</button>
+            <button id="modeImage" type="button">Image</button>
+          </div>
+          <button class="btn ghost menuBtn" id="clearBtn" type="button">Clear</button>
+        </div>
+      </div>
+
+      <div class="arena" id="arena">
+        <div class="wrap" id="wrap"></div>
+      </div>
+
+      <div class="composer">
+        <div class="row">
+          <textarea id="input" placeholder="Message Arshiya Ai… (Enter to send, Shift+Enter for new line)"></textarea>
+          <div class="sendStack">
+            <button class="btn primary" id="sendBtn" type="button">Send</button>
+            <div class="hint">Enter = send • Shift+Enter = newline</div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
 
 <script>
-const arena = document.getElementById("arena");
-const input = document.getElementById("input");
-const mode = document.getElementById("mode");
-const keyInput = document.getElementById("key");
-const status = document.getElementById("status");
+/**
+ * Arshiya Ai — single-file client demo
+ * Chat: POST https://api.openai.com/v1/responses   :contentReference[oaicite:3]{index=3}
+ * Images: POST https://api.openai.com/v1/images/generations :contentReference[oaicite:4]{index=4}
+ *
+ * Security: do not ship a real public site with a browser-stored key. :contentReference[oaicite:5]{index=5}
+ */
 
-let messages = [];
+const els = {
+  threads: document.getElementById('threads'),
+  newThreadBtn: document.getElementById('newThreadBtn'),
+  renameThreadBtn: document.getElementById('renameThreadBtn'),
+  deleteThreadBtn: document.getElementById('deleteThreadBtn'),
 
+  led: document.getElementById('led'),
+  connText: document.getElementById('connText'),
+  statusBox: document.getElementById('statusBox'),
+
+  apiKey: document.getElementById('apiKey'),
+  textModel: document.getElementById('textModel'),
+  imageModel: document.getElementById('imageModel'),
+  imgSize: document.getElementById('imgSize'),
+  imgCount: document.getElementById('imgCount'),
+  imgQuality: document.getElementById('imgQuality'),
+  imgBackground: document.getElementById('imgBackground'),
+
+  saveKeyBtn: document.getElementById('saveKeyBtn'),
+  testBtn: document.getElementById('testBtn'),
+
+  activeTitle: document.getElementById('activeTitle'),
+  activeSub: document.getElementById('activeSub'),
+
+  modeChat: document.getElementById('modeChat'),
+  modeImage: document.getElementById('modeImage'),
+  clearBtn: document.getElementById('clearBtn'),
+
+  wrap: document.getElementById('wrap'),
+  arena: document.getElementById('arena'),
+
+  input: document.getElementById('input'),
+  sendBtn: document.getElementById('sendBtn'),
+};
+
+const STORAGE = {
+  key: "arshiya_demo_openai_key",
+  state: "arshiya_demo_state_v2"
+};
+
+const state = {
+  mode: "chat",      // chat | image
+  activeId: null,
+  threads: {}        // id -> { id, title, createdAt, updatedAt, messages: [ {role,type,content,images?,time} ] }
+};
+
+function uid(){
+  return Math.random().toString(16).slice(2) + Date.now().toString(16);
+}
+function nowStamp(){
+  const d = new Date();
+  return d.toLocaleString(undefined, { hour:'2-digit', minute:'2-digit' });
+}
+function escapeHtml(s){
+  return (s || "").replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+function setConn(kind, text){
+  els.led.className = "led " + (kind || "warn");
+  els.connText.textContent = text || "Not connected";
+}
+function setStatus(text){
+  els.statusBox.textContent = text;
+}
+function getKey(){
+  return (els.apiKey.value || "").trim() || localStorage.getItem(STORAGE.key) || "";
+}
 function saveKey(){
-  localStorage.setItem("arshiya_key", keyInput.value.trim());
-  status.textContent = "Key saved";
+  const k = (els.apiKey.value || "").trim();
+  if(!k){
+    localStorage.removeItem(STORAGE.key);
+    setStatus("Key cleared.");
+    setConn("warn", "Not connected");
+    return;
+  }
+  localStorage.setItem(STORAGE.key, k);
+  setStatus("Key saved locally (demo).");
 }
 
-keyInput.value = localStorage.getItem("arshiya_key") || "";
+function persist(){
+  localStorage.setItem(STORAGE.state, JSON.stringify(state));
+  const prefs = {
+    mode: state.mode,
+    textModel: els.textModel.value,
+    imageModel: els.imageModel.value,
+    imgSize: els.imgSize.value,
+    imgCount: els.imgCount.value,
+    imgQuality: els.imgQuality.value,
+    imgBackground: els.imgBackground.value
+  };
+  localStorage.setItem(STORAGE.state + "_prefs", JSON.stringify(prefs));
+}
+function restore(){
+  // key
+  const k = localStorage.getItem(STORAGE.key);
+  if(k) els.apiKey.value = k;
 
-function add(role, content, images){
-  messages.push({role, content, images});
-  render();
+  // app state
+  const raw = localStorage.getItem(STORAGE.state);
+  if(raw){
+    try{
+      const loaded = JSON.parse(raw);
+      if(loaded && loaded.threads){
+        state.mode = loaded.mode || "chat";
+        state.activeId = loaded.activeId || null;
+        state.threads = loaded.threads || {};
+      }
+    }catch{}
+  }
+
+  // prefs
+  const pr = localStorage.getItem(STORAGE.state + "_prefs");
+  if(pr){
+    try{
+      const p = JSON.parse(pr);
+      if(p.textModel) els.textModel.value = p.textModel;
+      if(p.imageModel) els.imageModel.value = p.imageModel;
+      if(p.imgSize) els.imgSize.value = p.imgSize;
+      if(p.imgCount) els.imgCount.value = p.imgCount;
+      if(p.imgQuality) els.imgQuality.value = p.imgQuality;
+      if(p.imgBackground) els.imgBackground.value = p.imgBackground;
+      if(p.mode) state.mode = p.mode;
+    }catch{}
+  }
+
+  if(!state.activeId || !state.threads[state.activeId]){
+    createThread();
+  } else {
+    renderThreads();
+    renderChat();
+    syncModeUI();
+  }
 }
 
-function render(){
-  arena.innerHTML = messages.map(m=>{
-    let imgs = "";
-    if(m.images){
-      imgs = `<div class="images">` +
-        m.images.map(i=>`<img src="${i}">`).join("") +
-        `</div>`;
+function currentThread(){
+  return state.threads[state.activeId];
+}
+
+function createThread(){
+  const id = uid();
+  state.threads[id] = {
+    id,
+    title: "New chat",
+    createdAt: Date.now(),
+    updatedAt: Date.now(),
+    messages: []
+  };
+  state.activeId = id;
+  persist();
+  renderThreads();
+  renderChat();
+  syncModeUI();
+}
+
+function renameThread(){
+  const t = currentThread();
+  if(!t) return;
+  const name = prompt("Rename chat:", t.title);
+  if(name === null) return;
+  t.title = (name || "New chat").slice(0, 60);
+  t.updatedAt = Date.now();
+  persist();
+  renderThreads();
+  renderChat();
+}
+
+function deleteThread(){
+  const t = currentThread();
+  if(!t) return;
+  const ok = confirm(`Delete "${t.title}"?`);
+  if(!ok) return;
+  delete state.threads[t.id];
+  const ids = Object.keys(state.threads).sort((a,b)=>state.threads[b].updatedAt - state.threads[a].updatedAt);
+  state.activeId = ids[0] || null;
+  if(!state.activeId) createThread();
+  persist();
+  renderThreads();
+  renderChat();
+}
+
+function renderThreads(){
+  const ids = Object.keys(state.threads).sort((a,b)=>state.threads[b].updatedAt - state.threads[a].updatedAt);
+  els.threads.innerHTML = ids.map(id=>{
+    const t = state.threads[id];
+    const on = id === state.activeId ? "on" : "";
+    const dt = new Date(t.updatedAt);
+    const meta = dt.toLocaleDateString(undefined, { month:"short", day:"2-digit" });
+    return `
+      <div class="thread ${on}" data-id="${escapeHtml(id)}">
+        <div class="dot"></div>
+        <div class="title" title="${escapeHtml(t.title)}">${escapeHtml(t.title)}</div>
+        <div class="meta">${escapeHtml(meta)}</div>
+      </div>
+    `;
+  }).join("");
+
+  els.threads.querySelectorAll(".thread").forEach(el=>{
+    el.addEventListener("click", ()=>{
+      state.activeId = el.getAttribute("data-id");
+      persist();
+      renderThreads();
+      renderChat();
+    });
+  });
+}
+
+function renderChat(){
+  const t = currentThread();
+  if(!t) return;
+
+  els.activeTitle.textContent = t.title;
+
+  const count = t.messages.length;
+  els.activeSub.textContent = state.mode === "chat"
+    ? (count ? "Chat mode. Ask anything." : "Chat mode. Start with a message.")
+    : (count ? "Image mode. Describe what you want." : "Image mode. Describe an image.");
+
+  if(!t.messages.length){
+    els.wrap.innerHTML = `
+      <div class="msg">
+        <div class="av"><div class="mini"></div></div>
+        <div class="bubble ai">
+          <div class="meta"><div><strong>Arshiya Ai</strong></div><div>${nowStamp()}</div></div>
+          <div class="body">
+            You’re in <strong>${state.mode === "chat" ? "Chat" : "Image"}</strong> mode.
+            ${state.mode === "chat"
+              ? "Ask a question, request a plan, or paste text to rewrite."
+              : "Describe a scene, style, and subject. Example: “dark studio portrait, neon rim light, cinematic”."
+            }
+          </div>
+        </div>
+      </div>
+    `;
+    return;
+  }
+
+  els.wrap.innerHTML = t.messages.map(m=>{
+    const who = m.role === "user" ? "You" : "Arshiya Ai";
+    const cls = m.role === "user" ? "user" : "ai";
+
+    let body = "";
+    if(m.type === "image" && m.images?.length){
+      const grid = m.images.map((img, i)=>`
+        <div class="imgCard">
+          <img src="${img}" alt="generated ${i+1}">
+          <div class="cap">Image ${i+1}</div>
+        </div>
+      `).join("");
+      body = `
+        <div class="body">
+          ${escapeHtml(m.content || "")}
+          <div class="imgGrid">${grid}</div>
+        </div>
+      `;
+    } else if(m._typing){
+      body = `
+        <div class="body">
+          <span class="typing" aria-label="typing">
+            <span class="b"></span><span class="b"></span><span class="b"></span>
+          </span>
+        </div>
+      `;
+    } else {
+      body = `<div class="body">${escapeHtml(m.content || "")}</div>`;
     }
+
     return `
       <div class="msg">
-        <div class="avatar"></div>
-        <div class="bubble ${m.role}">
-          <div class="meta">${m.role === "user" ? "You" : "Arshiya Ai"}</div>
-          <div class="body">${m.content || ""}${imgs}</div>
+        <div class="av"><div class="mini"></div></div>
+        <div class="bubble ${cls}">
+          <div class="meta"><div><strong>${who}</strong></div><div>${escapeHtml(m.time || "")}</div></div>
+          ${body}
         </div>
       </div>
     `;
   }).join("");
-  arena.scrollTop = arena.scrollHeight;
+
+  els.arena.scrollTop = els.arena.scrollHeight;
 }
 
+function syncModeUI(){
+  const chatOn = state.mode === "chat";
+  els.modeChat.classList.toggle("on", chatOn);
+  els.modeImage.classList.toggle("on", !chatOn);
+  renderChat();
+  persist();
+}
+
+els.modeChat.addEventListener("click", ()=>{ state.mode="chat"; syncModeUI(); });
+els.modeImage.addEventListener("click", ()=>{ state.mode="image"; syncModeUI(); });
+
+els.newThreadBtn.addEventListener("click", createThread);
+els.renameThreadBtn.addEventListener("click", renameThread);
+els.deleteThreadBtn.addEventListener("click", deleteThread);
+
+els.clearBtn.addEventListener("click", ()=>{
+  const t = currentThread();
+  if(!t) return;
+  const ok = confirm("Clear messages in this chat?");
+  if(!ok) return;
+  t.messages = [];
+  t.updatedAt = Date.now();
+  persist();
+  renderThreads();
+  renderChat();
+});
+
+function pushMessage(msg){
+  const t = currentThread();
+  t.messages.push(msg);
+  t.updatedAt = Date.now();
+  // Auto-title from first user message
+  if(t.title === "New chat"){
+    const firstUser = t.messages.find(x=>x.role==="user" && x.type==="text" && x.content.trim());
+    if(firstUser){
+      t.title = firstUser.content.trim().slice(0, 36);
+    }
+  }
+  persist();
+  renderThreads();
+  renderChat();
+}
+
+function pushTyping(){
+  pushMessage({ role:"assistant", type:"text", content:"", time: nowStamp(), _typing:true });
+}
+function popTyping(){
+  const t = currentThread();
+  const idx = t.messages.findIndex(x=>x._typing);
+  if(idx >= 0) t.messages.splice(idx, 1);
+  persist();
+  renderChat();
+}
+
+function grow(){
+  els.input.style.height = "auto";
+  els.input.style.height = Math.min(180, els.input.scrollHeight) + "px";
+}
+els.input.addEventListener("input", grow);
+
+async function callResponsesAPI(userText){
+  const apiKey = getKey();
+  if(!apiKey) throw new Error("Missing API key.");
+
+  const t = currentThread();
+
+  const developerInstruction =
+`You are Arshiya Ai.
+Style: concise, high-signal, modern. No generic assistant tone.
+Do not mention policies or that you are an AI.
+If the user asks for an image: propose a refined prompt and remind them to switch to Image mode.`;
+
+  // Keep a bounded context window
+  const history = t.messages
+    .filter(m => !m._typing && m.type === "text")
+    .slice(-12)
+    .map(m => ({ role: m.role === "user" ? "user" : "assistant", content: m.content }));
+
+  const input = [
+    { role: "developer", content: [{ type:"input_text", text: developerInstruction }] },
+    ...history.map(h => ({ role: h.role, content: [{ type:"input_text", text: h.content }] })),
+    { role: "user", content: [{ type:"input_text", text: userText }] }
+  ];
+
+  const body = {
+    model: els.textModel.value,
+    input
+  };
+
+  const r = await fetch("https://api.openai.com/v1/responses", {
+    method: "POST",
+    headers: {
+      "Content-Type":"application/json",
+      "Authorization": "Bearer " + apiKey
+    },
+    body: JSON.stringify(body)
+  });
+
+  if(!r.ok){
+    const txt = await r.text().catch(()=> "");
+    throw new Error(`Responses API error (${r.status}): ${txt || r.statusText}`);
+  }
+
+  const data = await r.json();
+
+  // Parse output_text (and fall back to output message parts)
+  let text = "";
+  if(typeof data.output_text === "string") text = data.output_text;
+
+  if(!text && Array.isArray(data.output)){
+    for(const item of data.output){
+      if(item.type === "message" && Array.isArray(item.content)){
+        const parts = item.content.filter(p => p.type === "output_text" && typeof p.text === "string");
+        if(parts.length){
+          text = parts.map(p => p.text).join("\n");
+          break;
+        }
+      }
+    }
+  }
+
+  return (text || "").trim() || "I couldn’t produce a response. Try again.";
+}
+
+async function callImagesAPI(prompt){
+  const apiKey = getKey();
+  if(!apiKey) throw new Error("Missing API key.");
+
+  const body = {
+    model: els.imageModel.value,
+    prompt,
+    n: Number(els.imgCount.value),
+    size: els.imgSize.value,
+    quality: els.imgQuality.value,
+    background: els.imgBackground.value,
+    response_format: "b64_json"
+  };
+
+  const r = await fetch("https://api.openai.com/v1/images/generations", {
+    method: "POST",
+    headers: {
+      "Content-Type":"application/json",
+      "Authorization":"Bearer " + apiKey
+    },
+    body: JSON.stringify(body)
+  });
+
+  if(!r.ok){
+    const txt = await r.text().catch(()=> "");
+    throw new Error(`Images API error (${r.status}): ${txt || r.statusText}`);
+  }
+
+  const data = await r.json();
+  const imgs = (data.data || []).map(d => "data:image/png;base64," + d.b64_json);
+  if(!imgs.length) throw new Error("No images returned.");
+  return imgs;
+}
+
+let busy = false;
+
 async function send(){
-  const text = input.value.trim();
+  if(busy) return;
+  const text = (els.input.value || "").trim();
   if(!text) return;
-  input.value = "";
-  add("user", text);
 
-  const apiKey = localStorage.getItem("arshiya_key");
-  if(!apiKey){ add("ai","Missing API key"); return; }
+  els.input.value = "";
+  grow();
 
-  if(mode.value === "chat"){
-    const res = await fetch("https://api.openai.com/v1/chat/completions",{
-      method:"POST",
-      headers:{
-        "Content-Type":"application/json",
-        "Authorization":"Bearer " + apiKey
-      },
-      body:JSON.stringify({
-        model:"gpt-4o-mini",
-        messages:[
-          {role:"system",content:"You are Arshiya Ai. Be direct, modern, and helpful. Do not sound like ChatGPT."},
-          ...messages.filter(m=>!m.images).map(m=>({
-            role:m.role==="user"?"user":"assistant",
-            content:m.content
-          }))
-        ]
-      })
-    });
-    const data = await res.json();
-    add("ai", data.choices[0].message.content);
-  } else {
-    const res = await fetch("https://api.openai.com/v1/images/generations",{
-      method:"POST",
-      headers:{
-        "Content-Type":"application/json",
-        "Authorization":"Bearer " + apiKey
-      },
-      body:JSON.stringify({
-        model:"gpt-image-1",
-        prompt:text,
-        n:2,
-        size:"1024x1024"
-      })
-    });
-    const data = await res.json();
-    add("ai","Generated:", data.data.map(d=>"data:image/png;base64,"+d.b64_json));
+  pushMessage({ role:"user", type:"text", content:text, time: nowStamp() });
+
+  const key = getKey();
+  if(!key){
+    setConn("warn", "Not connected");
+    setStatus("Add an API key in the sidebar.");
+    pushMessage({ role:"assistant", type:"text", content:"Missing API key. Add it in the sidebar.", time: nowStamp() });
+    return;
+  }
+
+  busy = true;
+  els.sendBtn.disabled = true;
+  els.sendBtn.textContent = "Sending…";
+
+  try{
+    setConn("warn", "Working…");
+    pushTyping();
+
+    if(state.mode === "chat"){
+      const answer = await callResponsesAPI(text);
+      popTyping();
+      pushMessage({ role:"assistant", type:"text", content: answer, time: nowStamp() });
+      setConn("good", "Connected");
+      setStatus("Chat request completed.");
+    } else {
+      const imgs = await callImagesAPI(text);
+      popTyping();
+      pushMessage({
+        role:"assistant",
+        type:"image",
+        content:"Generated images:",
+        images: imgs,
+        time: nowStamp()
+      });
+      setConn("good", "Connected");
+      setStatus("Image generation completed.");
+    }
+  } catch(e){
+    popTyping();
+    setConn("bad", "Error");
+    setStatus(e.message || String(e));
+    pushMessage({ role:"assistant", type:"text", content: "Error: " + (e.message || String(e)), time: nowStamp() });
+  } finally{
+    busy = false;
+    els.sendBtn.disabled = false;
+    els.sendBtn.textContent = "Send";
+    persist();
   }
 }
 
-input.addEventListener("keydown",e=>{
-  if(e.key==="Enter"&&!e.shiftKey){
+els.sendBtn.addEventListener("click", send);
+
+els.input.addEventListener("keydown", (e)=>{
+  if(e.key === "Enter" && !e.shiftKey){
     e.preventDefault();
     send();
   }
 });
-</script>
-</body>
-</html>
-</script>
-</body>
-</html>
 
+els.saveKeyBtn.addEventListener("click", ()=>{
+  saveKey();
+});
+
+els.testBtn.addEventListener("click", async ()=>{
+  const key = getKey();
+  if(!key){
+    setConn("warn", "Not connected");
+    setStatus("Add an API key first, then press Test.");
+    return;
+  }
+  setConn("warn", "Testing…");
+  setStatus("Testing the Responses API…");
+  try{
+    pushTyping();
+    const out = await callResponsesAPI('Say exactly: "Arshiya Ai online." Then list 3 capabilities in bullets.');
+    popTyping();
+    pushMessage({ role:"assistant", type:"text", content: out, time: nowStamp() });
+    setConn("good", "Connected");
+    setStatus("Test OK.");
+  } catch(e){
+    popTyping();
+    setConn("bad", "Error");
+    setStatus(e.message || String(e));
+    pushMessage({ role:"assistant", type:"text", content: "Test failed: " + (e.message || String(e)), time: nowStamp() });
+  }
+});
+
+// Persist preference changes
+[els.textModel, els.imageModel, els.imgSize, els.imgCount, els.imgQuality, els.imgBackground].forEach(el=>{
+  el.addEventListener("change", persist);
+});
+
+// Init
+restore();
+syncModeUI();
+setConn(getKey() ? "warn" : "warn", getKey() ? "Key loaded" : "Not connected");
+setStatus(getKey() ? "Key loaded locally. Press Test." : "Not connected. Add a key and press Test.");
+grow();
+</script>
+</body>
+</html>
