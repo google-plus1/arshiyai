@@ -1,0 +1,591 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Arshiya Ai</title>
+  <style>
+    :root{
+      --bg0:#05060a;
+      --bg1:#070a12;
+      --panel: rgba(255,255,255,.06);
+      --panel2: rgba(255,255,255,.09);
+      --stroke: rgba(255,255,255,.12);
+      --txt: rgba(255,255,255,.92);
+      --muted: rgba(255,255,255,.62);
+      --a:#9b7bff; --b:#22d3ee; --c:#34d399;
+      --shadow: 0 24px 70px rgba(0,0,0,.55);
+      --r: 18px; --r2: 26px;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
+      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+    }
+    *{ box-sizing:border-box; }
+    html,body{ height:100%; }
+    body{
+      margin:0;
+      font-family: var(--sans);
+      color: var(--txt);
+      background:
+        radial-gradient(900px 500px at 20% 10%, rgba(155,123,255,.18), transparent 60%),
+        radial-gradient(700px 450px at 78% 18%, rgba(34,211,238,.16), transparent 62%),
+        radial-gradient(800px 520px at 60% 92%, rgba(52,211,153,.14), transparent 65%),
+        linear-gradient(180deg, var(--bg0), var(--bg1));
+      overflow:hidden;
+    }
+    .app{
+      height:100%;
+      display:grid;
+      grid-template-columns: 320px 1fr;
+      gap:14px;
+      padding:14px;
+    }
+    .card{
+      background: var(--panel);
+      border: 1px solid var(--stroke);
+      border-radius: var(--r2);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      overflow:hidden;
+    }
+    .side{ padding:16px; display:flex; flex-direction:column; gap:14px; }
+    .brand{
+      display:flex; gap:12px; align-items:center;
+      padding:10px 12px; border-radius: 16px;
+      background: rgba(255,255,255,.04);
+      border:1px solid rgba(255,255,255,.08);
+    }
+    .logo{
+      width:44px;height:44px;border-radius: 14px;
+      background: conic-gradient(from 210deg, var(--a), var(--b), var(--c), var(--a));
+      box-shadow: 0 10px 26px rgba(0,0,0,.45);
+      position:relative;
+    }
+    .logo:after{
+      content:""; position:absolute; inset:3px; border-radius:12px;
+      background: rgba(0,0,0,.35);
+      border:1px solid rgba(255,255,255,.18);
+    }
+    h1{ margin:0; font-size:16px; font-weight:800; letter-spacing:.3px; }
+    .sub{ margin:2px 0 0; font-size:12px; color:var(--muted); }
+
+    .sectionTitle{
+      margin:10px 2px 6px;
+      font-size: 12px;
+      color: var(--muted);
+      letter-spacing: .14em;
+      text-transform: uppercase;
+    }
+    .pillRow{ display:flex; flex-wrap:wrap; gap:8px; }
+    .pill{
+      padding:8px 10px;
+      border-radius: 999px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.05);
+      font-size: 12px;
+      cursor:pointer;
+      user-select:none;
+    }
+    .pill.on{
+      background: rgba(155,123,255,.16);
+      border-color: rgba(155,123,255,.35);
+    }
+
+    .kv{
+      padding:12px;
+      border-radius: 16px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.04);
+    }
+    label{ font-size:12px; color:var(--muted); display:block; margin-bottom:6px; }
+    select, input{
+      width:100%;
+      padding:10px 10px;
+      border-radius: 12px;
+      border:1px solid rgba(255,255,255,.16);
+      background: rgba(0,0,0,.25);
+      color: var(--txt);
+      outline:none;
+    }
+    .btn{
+      width:100%;
+      margin-top:10px;
+      padding:10px 12px;
+      border-radius: 14px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
+      color: var(--txt);
+      cursor:pointer;
+      font-weight: 750;
+      letter-spacing: .2px;
+    }
+    .btn.primary{
+      background: linear-gradient(135deg, rgba(155,123,255,.35), rgba(34,211,238,.25));
+    }
+    .status{
+      margin-top:10px;
+      padding:10px 12px;
+      border-radius: 14px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(0,0,0,.22);
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.35;
+      white-space: pre-wrap;
+    }
+
+    .main{ display:flex; flex-direction:column; overflow:hidden; }
+    .topbar{
+      display:flex; align-items:center; justify-content:space-between;
+      padding:14px 16px;
+      border-bottom:1px solid rgba(255,255,255,.10);
+      background: rgba(0,0,0,.12);
+    }
+    .chip{
+      display:inline-flex; align-items:center; gap:8px;
+      padding:8px 10px; border-radius:999px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.05);
+      font-size:12px; color:var(--muted);
+    }
+    .arena{
+      flex:1; overflow:auto;
+      padding:18px 18px 6px;
+    }
+    .msg{ max-width: 920px; margin: 0 auto 12px; display:flex; gap:10px; }
+    .avatar{
+      width:36px;height:36px;border-radius: 14px;
+      background: rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.12);
+      display:grid; place-items:center;
+      flex: 0 0 auto;
+    }
+    .mini{ width:18px;height:18px;border-radius: 8px;
+      background: conic-gradient(from 210deg, var(--a), var(--b), var(--c), var(--a));
+      opacity:.9;
+    }
+    .bubble{
+      flex:1;
+      border-radius: 18px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.05);
+      overflow:hidden;
+    }
+    .meta{
+      display:flex; justify-content:space-between; gap:10px;
+      padding:10px 12px;
+      background: rgba(0,0,0,.16);
+      border-bottom:1px solid rgba(255,255,255,.08);
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .body{
+      padding:12px 12px 14px;
+      font-size: 14px;
+      line-height: 1.55;
+      color: rgba(255,255,255,.88);
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    .bubble.user{ background: rgba(155,123,255,.10); border-color: rgba(155,123,255,.22); }
+    .bubble.ai{ background: rgba(34,211,238,.07); border-color: rgba(34,211,238,.18); }
+
+    .imgGrid{ display:grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap:10px; margin-top:10px; }
+    .imgCard{
+      border-radius: 16px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(0,0,0,.18);
+      overflow:hidden;
+    }
+    .imgCard img{ width:100%; height:auto; display:block; }
+    .cap{ padding:10px 12px; font-size:12px; color:var(--muted); border-top:1px solid rgba(255,255,255,.08); }
+
+    .composer{
+      padding: 12px 14px 14px;
+      border-top:1px solid rgba(255,255,255,.10);
+      background: rgba(0,0,0,.14);
+    }
+    .row{
+      max-width: 980px;
+      margin: 0 auto;
+      display:grid;
+      grid-template-columns: 1fr auto;
+      gap:10px;
+      align-items:end;
+    }
+    textarea{
+      width:100%;
+      resize:none;
+      min-height: 52px;
+      max-height: 160px;
+      padding:12px 12px;
+      border-radius: 18px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.25);
+      color: var(--txt);
+      outline:none;
+      line-height: 1.45;
+      font-size: 14px;
+    }
+    .sendCol{ display:flex; flex-direction:column; gap:8px; align-items:stretch; }
+    @media (max-width: 980px){
+      body{ overflow:auto; }
+      .app{ grid-template-columns: 1fr; height:auto; }
+      .main{ min-height: calc(100vh - 20px); }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <aside class="card side">
+      <div class="brand">
+        <div class="logo"></div>
+        <div>
+          <h1>Arshiya Ai</h1>
+          <div class="sub">Local, in-browser AI (no API keys)</div>
+        </div>
+      </div>
+
+      <div>
+        <div class="sectionTitle">Mode</div>
+        <div class="pillRow">
+          <div class="pill on" id="modeChat">Chat</div>
+          <div class="pill" id="modeImage">Image</div>
+        </div>
+      </div>
+
+      <div class="kv">
+        <label>Chat model (downloads on first use)</label>
+        <select id="chatModel">
+          <!-- These are examples; some models may be large. -->
+          <option value="Xenova/Phi-3-mini-4k-instruct">Phi-3 mini (instruct)</option>
+          <option value="Xenova/SmolLM2-1.7B-Instruct">SmolLM2 1.7B (instruct)</option>
+        </select>
+
+        <label style="margin-top:10px;">Image engine</label>
+        <select id="imgEngine">
+          <option value="web-txt2img">web-txt2img (WebGPU)</option>
+        </select>
+
+        <button class="btn primary" id="loadBtn">Load AI</button>
+        <div class="status" id="status">
+Ready when you are.
+Notes:
+- First load can be slow (model download).
+- Best results require a WebGPU-capable browser/device.
+        </div>
+      </div>
+
+      <div>
+        <div class="sectionTitle">Quick prompts</div>
+        <div class="pillRow">
+          <div class="pill" data-prompt="Give me a sharp plan for today with priorities.">Daily plan</div>
+          <div class="pill" data-prompt="Explain this fast and clearly: ">Explain fast</div>
+          <div class="pill" data-prompt="Write a clean message about: ">Draft</div>
+          <div class="pill" data-prompt="Create an image prompt: cinematic lighting, high detail. Subject: ">Image prompt</div>
+        </div>
+      </div>
+    </aside>
+
+    <main class="card main">
+      <div class="topbar">
+        <div class="chip"><strong id="readyState">Not loaded</strong></div>
+        <div class="chip">No API keys • Runs locally</div>
+      </div>
+
+      <div class="arena" id="arena"></div>
+
+      <div class="composer">
+        <div class="row">
+          <textarea id="input" placeholder="Type… (Enter to send, Shift+Enter for a new line)"></textarea>
+          <div class="sendCol">
+            <button class="btn primary" id="sendBtn">Send</button>
+            <button class="btn" id="clearBtn">Clear</button>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script type="module">
+    // Chat: transformers.js can run models directly in-browser (no server).  :contentReference[oaicite:2]{index=2}
+    // Image: SD-Turbo-class demos can run via WebGPU in-browser.          :contentReference[oaicite:3]{index=3}
+
+    const els = {
+      arena: document.getElementById('arena'),
+      input: document.getElementById('input'),
+      sendBtn: document.getElementById('sendBtn'),
+      clearBtn: document.getElementById('clearBtn'),
+      modeChat: document.getElementById('modeChat'),
+      modeImage: document.getElementById('modeImage'),
+      chatModel: document.getElementById('chatModel'),
+      imgEngine: document.getElementById('imgEngine'),
+      loadBtn: document.getElementById('loadBtn'),
+      status: document.getElementById('status'),
+      readyState: document.getElementById('readyState'),
+    };
+
+    const state = {
+      mode: 'chat',
+      loaded: false,
+      busy: false,
+      messages: [],
+      // Chat pipeline
+      textGen: null,
+      // Image generator
+      txt2img: null,
+    };
+
+    function nowStamp(){
+      const d = new Date();
+      return d.toLocaleString(undefined, { hour:'2-digit', minute:'2-digit' });
+    }
+    function escapeHtml(s){
+      return s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    }
+    function pushMessage(m){
+      state.messages.push(m);
+      render();
+    }
+    function render(){
+      if(state.messages.length === 0){
+        els.arena.innerHTML = `
+          <div class="msg">
+            <div class="avatar"><div class="mini"></div></div>
+            <div class="bubble ai">
+              <div class="meta"><div><strong>Arshiya Ai</strong></div><div>${nowStamp()}</div></div>
+              <div class="body">
+                This is a fully local AI build (static hosting).
+                Click <strong>Load AI</strong> to download the model into your browser, then chat or generate images.
+              </div>
+            </div>
+          </div>
+        `;
+        return;
+      }
+      els.arena.innerHTML = state.messages.map(m => {
+        const who = m.role === 'user' ? 'You' : 'Arshiya Ai';
+        const cls = m.role === 'user' ? 'bubble user' : 'bubble ai';
+
+        let body = '';
+        if(m.type === 'image' && m.images?.length){
+          const grid = m.images.map((img, i) => `
+            <div class="imgCard">
+              <img src="${img.dataUrl}" alt="generated ${i+1}">
+              <div class="cap">${escapeHtml(img.caption || 'Generated')}</div>
+            </div>
+          `).join('');
+          body = `<div class="body">${escapeHtml(m.content || '')}<div class="imgGrid">${grid}</div></div>`;
+        } else {
+          body = `<div class="body">${escapeHtml(m.content || '')}</div>`;
+        }
+
+        return `
+          <div class="msg">
+            <div class="avatar"><div class="mini"></div></div>
+            <div class="${cls}">
+              <div class="meta"><div><strong>${who}</strong></div><div>${escapeHtml(m.time || '')}</div></div>
+              ${body}
+            </div>
+          </div>
+        `;
+      }).join('');
+      els.arena.scrollTop = els.arena.scrollHeight;
+    }
+
+    function setStatus(t){ els.status.textContent = t; }
+    function setReady(t){ els.readyState.textContent = t; }
+
+    function syncMode(){
+      const chatOn = state.mode === 'chat';
+      els.modeChat.classList.toggle('on', chatOn);
+      els.modeImage.classList.toggle('on', !chatOn);
+    }
+    els.modeChat.addEventListener('click', () => { state.mode='chat'; syncMode(); });
+    els.modeImage.addEventListener('click', () => { state.mode='image'; syncMode(); });
+
+    document.querySelectorAll('[data-prompt]').forEach(p => {
+      p.addEventListener('click', () => {
+        const t = p.getAttribute('data-prompt') || '';
+        els.input.value = (els.input.value ? (els.input.value + '\n') : '') + t;
+        els.input.focus();
+      });
+    });
+
+    // --- Load models (local inference)
+    els.loadBtn.addEventListener('click', async () => {
+      if(state.loaded) return;
+
+      try{
+        setReady('Loading…');
+        setStatus('Checking WebGPU…');
+
+        const webgpuOk = !!navigator.gpu;
+        setStatus(webgpuOk
+          ? 'WebGPU detected. Loading models… (first load downloads weights)'
+          : 'WebGPU not detected. Chat may still work, but image generation likely will not.');
+
+        // transformers.js (ESM) - in-browser LLM. :contentReference[oaicite:4]{index=4}
+        const { pipeline } = await import('https://esm.sh/@huggingface/transformers@3.6.0');
+
+        // Use WebGPU if available; transformers.js will select best available backend.
+        const modelId = els.chatModel.value;
+        setStatus(`Loading chat model: ${modelId}\nThis can take time on first run.`);
+
+        state.textGen = await pipeline('text-generation', modelId, {
+          // Let the library pick best device; many setups will use WebGPU when possible.
+          // If your device struggles, you can switch to a smaller model.
+        });
+
+        // Image generation: browser-only library that supports SD-Turbo-class models via WebGPU. :contentReference[oaicite:5]{index=5}
+        // This import may take a moment; first run downloads model assets when you generate.
+        const { createTxt2Img } = await import('https://esm.sh/web-txt2img@0.3.2');
+
+        state.txt2img = await createTxt2Img({
+          // Adapter selection is handled internally; WebGPU strongly recommended.
+          // Defaults typically use SD-Turbo-like options where available.
+        });
+
+        state.loaded = true;
+        setReady('Loaded');
+        setStatus('Loaded. You can chat or generate images locally now.');
+
+        pushMessage({ role:'assistant', type:'text', content:
+`Arshiya Ai online.
+Mode tips:
+- Chat: ask normally.
+- Image: describe the scene; I’ll generate images locally.`,
+          time: nowStamp()
+        });
+      } catch(e){
+        setReady('Load failed');
+        setStatus(
+`Load failed:
+${e?.message || e}
+
+Common reasons:
+- Your browser/device does not support WebGPU.
+- The selected model is too large for memory.
+- CDN blocked on your network.`
+        );
+      }
+    });
+
+    // --- Chat + Image actions
+    async function doChat(prompt){
+      // A “persona” prompt to avoid generic ChatGPT vibes.
+      const system =
+`You are Arshiya Ai.
+Voice: sharp, modern, not overly polite, not verbose.
+Output: structured when useful, otherwise concise.
+No mention of being a model or API.`;
+
+      // Keep a short local memory window.
+      const history = state.messages
+        .filter(m => m.type === 'text')
+        .slice(-8)
+        .map(m => `${m.role === 'user' ? 'User' : 'Arshiya'}: ${m.content}`)
+        .join('\n');
+
+      const full = `${system}\n\n${history}\nUser: ${prompt}\nArshiya:`;
+
+      const out = await state.textGen(full, {
+        max_new_tokens: 220,
+        temperature: 0.7,
+        top_p: 0.9,
+        repetition_penalty: 1.08,
+        do_sample: true,
+      });
+
+      // transformers.js returns generated text that includes the prompt; strip it.
+      const generated = out?.[0]?.generated_text || '';
+      const answer = generated.startsWith(full) ? generated.slice(full.length) : generated;
+      return answer.trim() || '(No output)';
+    }
+
+    async function doImage(prompt){
+      if(!navigator.gpu){
+        throw new Error('WebGPU not available. Image generation needs a WebGPU-capable browser/device.');
+      }
+      const imgs = await state.txt2img.generate({
+        prompt,
+        // Conservative defaults; you can expose these as UI controls later.
+        width: 512,
+        height: 512,
+        steps: 4,
+        guidance: 1.5,
+        count: 2
+      });
+
+      // imgs may be ImageBitmap/canvas; convert to data URLs for display
+      const dataUrls = [];
+      for (let i = 0; i < imgs.length; i++){
+        const c = document.createElement('canvas');
+        c.width = 512; c.height = 512;
+        const ctx = c.getContext('2d');
+        // drawImage works for ImageBitmap/HTMLImageElement
+        ctx.drawImage(imgs[i], 0, 0, 512, 512);
+        dataUrls.push({ dataUrl: c.toDataURL('image/png'), caption: `Image ${i+1}` });
+      }
+      return dataUrls;
+    }
+
+    async function send(){
+      const text = (els.input.value || '').trim();
+      if(!text || state.busy) return;
+
+      if(!state.loaded){
+        setStatus('Click “Load AI” first (it downloads models into your browser).');
+        return;
+      }
+
+      state.busy = true;
+      els.sendBtn.disabled = true;
+
+      pushMessage({ role:'user', type:'text', content:text, time: nowStamp() });
+      els.input.value = '';
+
+      try{
+        if(state.mode === 'chat'){
+          const answer = await doChat(text);
+          pushMessage({ role:'assistant', type:'text', content: answer, time: nowStamp() });
+        } else {
+          const images = await doImage(text);
+          pushMessage({
+            role:'assistant',
+            type:'image',
+            content: 'Generated locally in your browser:',
+            images,
+            time: nowStamp()
+          });
+        }
+      } catch(e){
+        pushMessage({
+          role:'assistant',
+          type:'text',
+          content: `Error: ${e?.message || e}`,
+          time: nowStamp()
+        });
+      } finally {
+        state.busy = false;
+        els.sendBtn.disabled = false;
+      }
+    }
+
+    els.sendBtn.addEventListener('click', send);
+    els.input.addEventListener('keydown', (e) => {
+      if(e.key === 'Enter' && !e.shiftKey){
+        e.preventDefault();
+        send();
+      }
+    });
+    els.clearBtn.addEventListener('click', () => {
+      state.messages = [];
+      render();
+    });
+
+    render();
+    syncMode();
+  </script>
+</body>
+</html>
