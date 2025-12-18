@@ -8,6 +8,7 @@
     :root{
       --bg0:#07080c;
       --bg1:#0b0d14;
+      --side: rgba(0,0,0,.22);
       --panel: rgba(255,255,255,.06);
       --panel2: rgba(255,255,255,.09);
       --stroke: rgba(255,255,255,.10);
@@ -25,10 +26,8 @@
       --r2: 24px;
       --shadow: 0 24px 80px rgba(0,0,0,.55);
       --shadow2: 0 10px 30px rgba(0,0,0,.40);
-      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
       --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
     }
-
     *{ box-sizing:border-box; }
     html,body{ height:100%; }
     body{
@@ -52,14 +51,13 @@
     /* Sidebar */
     .side{
       border-right: 1px solid rgba(255,255,255,.08);
-      background: rgba(0,0,0,.20);
+      background: var(--side);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
       display:flex;
       flex-direction:column;
       min-width: 280px;
     }
-
     .sideTop{
       padding:16px;
       border-bottom: 1px solid rgba(255,255,255,.08);
@@ -67,7 +65,6 @@
       gap:12px;
       align-items:center;
     }
-
     .mark{
       width:44px; height:44px;
       border-radius: 16px;
@@ -84,7 +81,6 @@
       border: 1px solid rgba(255,255,255,.14);
       backdrop-filter: blur(10px);
     }
-
     .brandText{ min-width:0; }
     .brandText .name{
       font-weight: 820;
@@ -189,7 +185,6 @@
       gap:10px;
       background: rgba(0,0,0,.16);
     }
-
     .field label{
       display:block;
       font-size: 11px;
@@ -209,16 +204,6 @@
     }
     .field input::placeholder{ color: rgba(255,255,255,.35); }
 
-    .status{
-      font-size: 12px;
-      color: var(--muted);
-      line-height: 1.35;
-      white-space: pre-wrap;
-      padding: 10px 12px;
-      border-radius: 14px;
-      border: 1px solid rgba(255,255,255,.10);
-      background: rgba(0,0,0,.20);
-    }
     .badge{
       display:inline-flex;
       align-items:center;
@@ -239,13 +224,23 @@
     .led.warn{ background: var(--warn); box-shadow: 0 0 0 4px rgba(255,195,106,.10); }
     .led.bad{ background: var(--bad); box-shadow: 0 0 0 4px rgba(255,91,122,.12); }
 
+    .status{
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.35;
+      white-space: pre-wrap;
+      padding: 10px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(0,0,0,.20);
+    }
+
     /* Main */
     .main{
       display:flex;
       flex-direction:column;
       overflow:hidden;
     }
-
     .topbar{
       padding: 14px 18px;
       border-bottom: 1px solid rgba(255,255,255,.08);
@@ -255,16 +250,29 @@
       justify-content:space-between;
       gap:10px;
     }
-
     .topbar .left{
       display:flex;
       align-items:center;
       gap:12px;
       min-width:0;
     }
-    .topTitle{
-      min-width:0;
+    .av{
+      width: 34px; height: 34px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.05);
+      display:grid;
+      place-items:center;
+      flex: 0 0 auto;
+      box-shadow: 0 12px 28px rgba(0,0,0,.35);
     }
+    .av .mini{
+      width: 16px; height: 16px;
+      border-radius: 8px;
+      background: conic-gradient(from 220deg, var(--a), var(--b), var(--c), var(--a));
+      opacity:.9;
+    }
+    .topTitle{ min-width:0; }
     .topTitle .h{
       margin:0;
       font-size: 14px;
@@ -290,7 +298,6 @@
       flex-wrap: wrap;
       justify-content:flex-end;
     }
-
     .toggle{
       display:flex;
       border: 1px solid rgba(255,255,255,.12);
@@ -330,23 +337,6 @@
       margin: 0 0 14px;
       align-items:flex-start;
     }
-    .av{
-      width: 34px; height: 34px;
-      border-radius: 14px;
-      border: 1px solid rgba(255,255,255,.12);
-      background: rgba(255,255,255,.05);
-      display:grid;
-      place-items:center;
-      flex: 0 0 auto;
-      box-shadow: 0 12px 28px rgba(0,0,0,.35);
-    }
-    .av .mini{
-      width: 16px; height: 16px;
-      border-radius: 8px;
-      background: conic-gradient(from 220deg, var(--a), var(--b), var(--c), var(--a));
-      opacity:.9;
-    }
-
     .bubble{
       flex:1;
       border-radius: var(--r2);
@@ -363,7 +353,6 @@
       background: rgba(34,211,238,.06);
       border-color: rgba(34,211,238,.18);
     }
-
     .bubble .meta{
       display:flex;
       justify-content:space-between;
@@ -433,13 +422,13 @@
       box-shadow: 0 10px 28px rgba(0,0,0,.28);
     }
     textarea::placeholder{ color: rgba(255,255,255,.35); }
+
     .sendStack{
       display:flex;
       flex-direction:column;
       gap: 8px;
       align-items:stretch;
     }
-
     .hint{
       font-size: 11px;
       color: var(--muted2);
@@ -464,13 +453,6 @@
       40% { transform: translateY(-5px); opacity:.9; }
     }
 
-    .menuBtn{
-      width:auto;
-      padding: 10px 12px;
-      border-radius: 14px;
-    }
-
-    /* Mobile */
     @media (max-width: 980px){
       body{ overflow:auto; }
       .app{ grid-template-columns: 1fr; }
@@ -479,148 +461,145 @@
     }
   </style>
 </head>
+
 <body>
-  <div class="app">
-    <!-- Sidebar -->
-    <aside class="side">
-      <div class="sideTop">
-        <div class="mark" aria-hidden="true"></div>
-        <div class="brandText">
-          <p class="name">Arshiya Ai</p>
-          <p class="tag">Personal assistant workspace</p>
-        </div>
+<div class="app">
+
+  <!-- Sidebar -->
+  <aside class="side">
+    <div class="sideTop">
+      <div class="mark" aria-hidden="true"></div>
+      <div class="brandText">
+        <p class="name">Arshiya Ai</p>
+        <p class="tag">Dark workspace • chat + images</p>
+      </div>
+    </div>
+
+    <div class="sideActions">
+      <button class="btn primary" id="newThreadBtn">New chat</button>
+      <button class="btn ghost" id="renameThreadBtn">Rename</button>
+      <button class="btn ghost" id="deleteThreadBtn">Delete</button>
+    </div>
+
+    <div class="threads" id="threads"></div>
+
+    <div class="sideBottom">
+      <div class="badge" title="Connection status">
+        <span class="led warn" id="led"></span>
+        <span id="connText">Not connected</span>
       </div>
 
-      <div class="sideActions">
-        <button class="btn primary" id="newThreadBtn">New chat</button>
-        <button class="btn ghost" id="renameThreadBtn">Rename</button>
-        <button class="btn ghost" id="deleteThreadBtn">Delete</button>
+      <div class="field">
+        <label for="apiKey">OpenAI API Key (demo)</label>
+        <input id="apiKey" type="password" placeholder="sk-..." autocomplete="off"/>
       </div>
 
-      <div class="threads" id="threads"></div>
+      <div class="field">
+        <label for="textModel">Text model</label>
+        <select id="textModel">
+          <option value="gpt-5.2">gpt-5.2</option>
+          <option value="gpt-5">gpt-5</option>
+        </select>
+      </div>
 
-      <div class="sideBottom">
-        <div class="badge" title="Connection status">
-          <span class="led warn" id="led"></span>
-          <span id="connText">Not connected</span>
-        </div>
+      <div class="field">
+        <label for="imageModel">Image model</label>
+        <select id="imageModel">
+          <option value="gpt-image-1.5">gpt-image-1.5</option>
+          <option value="gpt-image-1">gpt-image-1</option>
+          <option value="gpt-image-1-mini">gpt-image-1-mini</option>
+        </select>
+      </div>
 
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
         <div class="field">
-          <label for="apiKey">API Key (demo)</label>
-          <input id="apiKey" type="password" placeholder="sk-..." autocomplete="off"/>
-        </div>
-
-        <div class="field">
-          <label for="textModel">Text model</label>
-          <select id="textModel">
-            <option value="gpt-5.2">gpt-5.2</option>
-            <option value="gpt-5">gpt-5</option>
+          <label for="imgSize">Size</label>
+          <select id="imgSize">
+            <option value="1024x1024">1024×1024</option>
+            <option value="1536x1024">1536×1024</option>
+            <option value="1024x1536">1024×1536</option>
+            <option value="auto">auto</option>
           </select>
         </div>
-
         <div class="field">
-          <label for="imageModel">Image model</label>
-          <select id="imageModel">
-            <option value="gpt-image-1">gpt-image-1</option>
-            <option value="gpt-image-1-mini">gpt-image-1-mini</option>
-            <option value="gpt-image-1.5">gpt-image-1.5</option>
+          <label for="imgCount">Count</label>
+          <select id="imgCount">
+            <option value="1">1</option>
+            <option value="2" selected>2</option>
+            <option value="4">4</option>
           </select>
         </div>
-
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
-          <div class="field">
-            <label for="imgSize">Size</label>
-            <select id="imgSize">
-              <option value="1024x1024">1024×1024</option>
-              <option value="1536x1024">1536×1024</option>
-              <option value="1024x1536">1024×1536</option>
-              <option value="auto">auto</option>
-            </select>
-          </div>
-          <div class="field">
-            <label for="imgCount">Count</label>
-            <select id="imgCount">
-              <option value="1">1</option>
-              <option value="2" selected>2</option>
-              <option value="4">4</option>
-            </select>
-          </div>
-        </div>
-
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
-          <div class="field">
-            <label for="imgQuality">Quality</label>
-            <select id="imgQuality">
-              <option value="auto" selected>auto</option>
-              <option value="high">high</option>
-              <option value="medium">medium</option>
-              <option value="low">low</option>
-            </select>
-          </div>
-          <div class="field">
-            <label for="imgBackground">Background</label>
-            <select id="imgBackground">
-              <option value="auto" selected>auto</option>
-              <option value="opaque">opaque</option>
-              <option value="transparent">transparent</option>
-            </select>
-          </div>
-        </div>
-
-        <button class="btn" id="saveKeyBtn">Save key</button>
-        <button class="btn ghost" id="testBtn">Test</button>
-
-        <div class="status" id="statusBox">
-Not connected. Add a key and press Test.
-(For public sites: do not expose keys client-side.)
-        </div>
       </div>
-    </aside>
 
-    <!-- Main -->
-    <main class="main">
-      <div class="topbar">
-        <div class="left">
-          <div class="av" aria-hidden="true"><div class="mini"></div></div>
-          <div class="topTitle">
-            <p class="h" id="activeTitle">New chat</p>
-            <p class="s" id="activeSub">Chat or generate images. No logos. Your styling.</p>
-          </div>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+        <div class="field">
+          <label for="imgQuality">Quality</label>
+          <select id="imgQuality">
+            <option value="auto" selected>auto</option>
+            <option value="high">high</option>
+            <option value="medium">medium</option>
+            <option value="low">low</option>
+          </select>
         </div>
-
-        <div class="controls">
-          <div class="toggle" role="tablist" aria-label="Mode">
-            <button id="modeChat" class="on" type="button">Chat</button>
-            <button id="modeImage" type="button">Image</button>
-          </div>
-          <button class="btn ghost menuBtn" id="clearBtn" type="button">Clear</button>
+        <div class="field">
+          <label for="imgBackground">Background</label>
+          <select id="imgBackground">
+            <option value="auto" selected>auto</option>
+            <option value="opaque">opaque</option>
+            <option value="transparent">transparent</option>
+          </select>
         </div>
       </div>
 
-      <div class="arena" id="arena">
-        <div class="wrap" id="wrap"></div>
-      </div>
+      <button class="btn" id="saveKeyBtn">Save key</button>
+      <button class="btn ghost" id="testBtn">Test</button>
 
-      <div class="composer">
-        <div class="row">
-          <textarea id="input" placeholder="Message Arshiya Ai… (Enter to send, Shift+Enter for new line)"></textarea>
-          <div class="sendStack">
-            <button class="btn primary" id="sendBtn" type="button">Send</button>
-            <div class="hint">Enter = send • Shift+Enter = newline</div>
-          </div>
+      <div class="status" id="statusBox">Not connected. Add a key and press Test.</div>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <main class="main">
+    <div class="topbar">
+      <div class="left">
+        <div class="av" aria-hidden="true"><div class="mini"></div></div>
+        <div class="topTitle">
+          <p class="h" id="activeTitle">New chat</p>
+          <p class="s" id="activeSub">Chat or generate images.</p>
         </div>
       </div>
-    </main>
-  </div>
+
+      <div class="controls">
+        <div class="toggle" role="tablist" aria-label="Mode">
+          <button id="modeChat" class="on" type="button">Chat</button>
+          <button id="modeImage" type="button">Image</button>
+        </div>
+        <button class="btn ghost" id="clearBtn" type="button">Clear</button>
+      </div>
+    </div>
+
+    <div class="arena" id="arena">
+      <div class="wrap" id="wrap"></div>
+    </div>
+
+    <div class="composer">
+      <div class="row">
+        <textarea id="input" placeholder="Message… (Enter to send, Shift+Enter for new line)"></textarea>
+        <div class="sendStack">
+          <button class="btn primary" id="sendBtn" type="button">Send</button>
+          <div class="hint">Enter = send • Shift+Enter = newline</div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
 
 <script>
-/**
- * Arshiya Ai — single-file client demo
- * Chat: POST https://api.openai.com/v1/responses   :contentReference[oaicite:3]{index=3}
- * Images: POST https://api.openai.com/v1/images/generations :contentReference[oaicite:4]{index=4}
- *
- * Security: do not ship a real public site with a browser-stored key. :contentReference[oaicite:5]{index=5}
- */
+/*
+  FIXED: No `input_text` blocks anywhere.
+  Responses API uses top-level `instructions` + `input` (string). :contentReference[oaicite:2]{index=2}
+  Images API uses `size`, `quality`, `background`, `output_format`. GPT image models return base64 by default. :contentReference[oaicite:3]{index=3}
+*/
 
 const els = {
   threads: document.getElementById('threads'),
@@ -658,19 +637,18 @@ const els = {
 };
 
 const STORAGE = {
-  key: "arshiya_demo_openai_key",
-  state: "arshiya_demo_state_v2"
+  key: "arshiya_key_demo",
+  state: "arshiya_state_v3",
+  prefs: "arshiya_prefs_v3"
 };
 
 const state = {
   mode: "chat",      // chat | image
   activeId: null,
-  threads: {}        // id -> { id, title, createdAt, updatedAt, messages: [ {role,type,content,images?,time} ] }
+  threads: {}        // id -> { id, title, createdAt, updatedAt, messages: [ {role,type,content,images?,time,_typing?} ] }
 };
 
-function uid(){
-  return Math.random().toString(16).slice(2) + Date.now().toString(16);
-}
+function uid(){ return Math.random().toString(16).slice(2) + Date.now().toString(16); }
 function nowStamp(){
   const d = new Date();
   return d.toLocaleString(undefined, { hour:'2-digit', minute:'2-digit' });
@@ -682,9 +660,8 @@ function setConn(kind, text){
   els.led.className = "led " + (kind || "warn");
   els.connText.textContent = text || "Not connected";
 }
-function setStatus(text){
-  els.statusBox.textContent = text;
-}
+function setStatus(text){ els.statusBox.textContent = text; }
+
 function getKey(){
   return (els.apiKey.value || "").trim() || localStorage.getItem(STORAGE.key) || "";
 }
@@ -692,33 +669,32 @@ function saveKey(){
   const k = (els.apiKey.value || "").trim();
   if(!k){
     localStorage.removeItem(STORAGE.key);
-    setStatus("Key cleared.");
     setConn("warn", "Not connected");
+    setStatus("Key cleared.");
     return;
   }
   localStorage.setItem(STORAGE.key, k);
-  setStatus("Key saved locally (demo).");
+  setConn("warn", "Key saved");
+  setStatus("Key saved locally (demo). Press Test.");
 }
 
 function persist(){
   localStorage.setItem(STORAGE.state, JSON.stringify(state));
-  const prefs = {
+  localStorage.setItem(STORAGE.prefs, JSON.stringify({
     mode: state.mode,
     textModel: els.textModel.value,
     imageModel: els.imageModel.value,
     imgSize: els.imgSize.value,
     imgCount: els.imgCount.value,
     imgQuality: els.imgQuality.value,
-    imgBackground: els.imgBackground.value
-  };
-  localStorage.setItem(STORAGE.state + "_prefs", JSON.stringify(prefs));
+    imgBackground: els.imgBackground.value,
+  }));
 }
+
 function restore(){
-  // key
   const k = localStorage.getItem(STORAGE.key);
   if(k) els.apiKey.value = k;
 
-  // app state
   const raw = localStorage.getItem(STORAGE.state);
   if(raw){
     try{
@@ -730,9 +706,7 @@ function restore(){
       }
     }catch{}
   }
-
-  // prefs
-  const pr = localStorage.getItem(STORAGE.state + "_prefs");
+  const pr = localStorage.getItem(STORAGE.prefs);
   if(pr){
     try{
       const p = JSON.parse(pr);
@@ -755,19 +729,11 @@ function restore(){
   }
 }
 
-function currentThread(){
-  return state.threads[state.activeId];
-}
+function currentThread(){ return state.threads[state.activeId]; }
 
 function createThread(){
   const id = uid();
-  state.threads[id] = {
-    id,
-    title: "New chat",
-    createdAt: Date.now(),
-    updatedAt: Date.now(),
-    messages: []
-  };
+  state.threads[id] = { id, title:"New chat", createdAt: Date.now(), updatedAt: Date.now(), messages: [] };
   state.activeId = id;
   persist();
   renderThreads();
@@ -790,8 +756,7 @@ function renameThread(){
 function deleteThread(){
   const t = currentThread();
   if(!t) return;
-  const ok = confirm(`Delete "${t.title}"?`);
-  if(!ok) return;
+  if(!confirm(`Delete "${t.title}"?`)) return;
   delete state.threads[t.id];
   const ids = Object.keys(state.threads).sort((a,b)=>state.threads[b].updatedAt - state.threads[a].updatedAt);
   state.activeId = ids[0] || null;
@@ -832,11 +797,7 @@ function renderChat(){
   if(!t) return;
 
   els.activeTitle.textContent = t.title;
-
-  const count = t.messages.length;
-  els.activeSub.textContent = state.mode === "chat"
-    ? (count ? "Chat mode. Ask anything." : "Chat mode. Start with a message.")
-    : (count ? "Image mode. Describe what you want." : "Image mode. Describe an image.");
+  els.activeSub.textContent = state.mode === "chat" ? "Chat mode." : "Image mode.";
 
   if(!t.messages.length){
     els.wrap.innerHTML = `
@@ -845,10 +806,9 @@ function renderChat(){
         <div class="bubble ai">
           <div class="meta"><div><strong>Arshiya Ai</strong></div><div>${nowStamp()}</div></div>
           <div class="body">
-            You’re in <strong>${state.mode === "chat" ? "Chat" : "Image"}</strong> mode.
             ${state.mode === "chat"
-              ? "Ask a question, request a plan, or paste text to rewrite."
-              : "Describe a scene, style, and subject. Example: “dark studio portrait, neon rim light, cinematic”."
+              ? "Ask anything. Keep it short or detailed—your call."
+              : "Describe the image: subject + style + lighting + mood. Example: “dark cinematic portrait, neon rim light, shallow depth of field”."
             }
           </div>
         </div>
@@ -862,7 +822,13 @@ function renderChat(){
     const cls = m.role === "user" ? "user" : "ai";
 
     let body = "";
-    if(m.type === "image" && m.images?.length){
+    if(m._typing){
+      body = `
+        <div class="body">
+          <span class="typing"><span class="b"></span><span class="b"></span><span class="b"></span></span>
+        </div>
+      `;
+    } else if(m.type === "image" && m.images?.length){
       const grid = m.images.map((img, i)=>`
         <div class="imgCard">
           <img src="${img}" alt="generated ${i+1}">
@@ -873,14 +839,6 @@ function renderChat(){
         <div class="body">
           ${escapeHtml(m.content || "")}
           <div class="imgGrid">${grid}</div>
-        </div>
-      `;
-    } else if(m._typing){
-      body = `
-        <div class="body">
-          <span class="typing" aria-label="typing">
-            <span class="b"></span><span class="b"></span><span class="b"></span>
-          </span>
         </div>
       `;
     } else {
@@ -919,8 +877,7 @@ els.deleteThreadBtn.addEventListener("click", deleteThread);
 els.clearBtn.addEventListener("click", ()=>{
   const t = currentThread();
   if(!t) return;
-  const ok = confirm("Clear messages in this chat?");
-  if(!ok) return;
+  if(!confirm("Clear messages in this chat?")) return;
   t.messages = [];
   t.updatedAt = Date.now();
   persist();
@@ -932,12 +889,10 @@ function pushMessage(msg){
   const t = currentThread();
   t.messages.push(msg);
   t.updatedAt = Date.now();
-  // Auto-title from first user message
+
   if(t.title === "New chat"){
-    const firstUser = t.messages.find(x=>x.role==="user" && x.type==="text" && x.content.trim());
-    if(firstUser){
-      t.title = firstUser.content.trim().slice(0, 36);
-    }
+    const firstUser = t.messages.find(x=>x.role==="user" && x.type==="text" && (x.content||"").trim());
+    if(firstUser) t.title = firstUser.content.trim().slice(0, 36);
   }
   persist();
   renderThreads();
@@ -961,32 +916,36 @@ function grow(){
 }
 els.input.addEventListener("input", grow);
 
+/* -----------------------------
+   OPENAI CALLS (FIXED)
+   ----------------------------- */
+
 async function callResponsesAPI(userText){
   const apiKey = getKey();
   if(!apiKey) throw new Error("Missing API key.");
 
   const t = currentThread();
 
-  const developerInstruction =
+  const instructions =
 `You are Arshiya Ai.
-Style: concise, high-signal, modern. No generic assistant tone.
-Do not mention policies or that you are an AI.
-If the user asks for an image: propose a refined prompt and remind them to switch to Image mode.`;
+Voice: modern, direct, high-signal.
+Avoid generic assistant phrasing. No mention of policies or being an AI.
+If the user asks for images, suggest a refined image prompt and tell them to switch to Image mode.`;
 
-  // Keep a bounded context window
+  // Compact transcript (string input)
   const history = t.messages
     .filter(m => !m._typing && m.type === "text")
     .slice(-12)
-    .map(m => ({ role: m.role === "user" ? "user" : "assistant", content: m.content }));
+    .map(m => `${m.role === "user" ? "User" : "Arshiya"}: ${m.content}`)
+    .join("\n");
 
-  const input = [
-    { role: "developer", content: [{ type:"input_text", text: developerInstruction }] },
-    ...history.map(h => ({ role: h.role, content: [{ type:"input_text", text: h.content }] })),
-    { role: "user", content: [{ type:"input_text", text: userText }] }
-  ];
+  const input = history
+    ? `${history}\nUser: ${userText}\nArshiya:`
+    : `User: ${userText}\nArshiya:`;
 
   const body = {
     model: els.textModel.value,
+    instructions,
     input
   };
 
@@ -994,7 +953,7 @@ If the user asks for an image: propose a refined prompt and remind them to switc
     method: "POST",
     headers: {
       "Content-Type":"application/json",
-      "Authorization": "Bearer " + apiKey
+      "Authorization":"Bearer " + apiKey
     },
     body: JSON.stringify(body)
   });
@@ -1005,30 +964,15 @@ If the user asks for an image: propose a refined prompt and remind them to switc
   }
 
   const data = await r.json();
-
-  // Parse output_text (and fall back to output message parts)
-  let text = "";
-  if(typeof data.output_text === "string") text = data.output_text;
-
-  if(!text && Array.isArray(data.output)){
-    for(const item of data.output){
-      if(item.type === "message" && Array.isArray(item.content)){
-        const parts = item.content.filter(p => p.type === "output_text" && typeof p.text === "string");
-        if(parts.length){
-          text = parts.map(p => p.text).join("\n");
-          break;
-        }
-      }
-    }
-  }
-
-  return (text || "").trim() || "I couldn’t produce a response. Try again.";
+  const text = (data.output_text || "").trim();
+  return text || "No text returned.";
 }
 
 async function callImagesAPI(prompt){
   const apiKey = getKey();
   if(!apiKey) throw new Error("Missing API key.");
 
+  // For GPT image models, base64 is returned by default; control size/quality/background/output_format. :contentReference[oaicite:4]{index=4}
   const body = {
     model: els.imageModel.value,
     prompt,
@@ -1036,7 +980,7 @@ async function callImagesAPI(prompt){
     size: els.imgSize.value,
     quality: els.imgQuality.value,
     background: els.imgBackground.value,
-    response_format: "b64_json"
+    output_format: "png"
   };
 
   const r = await fetch("https://api.openai.com/v1/images/generations", {
@@ -1058,6 +1002,10 @@ async function callImagesAPI(prompt){
   if(!imgs.length) throw new Error("No images returned.");
   return imgs;
 }
+
+/* -----------------------------
+   SEND / TEST
+   ----------------------------- */
 
 let busy = false;
 
@@ -1096,13 +1044,7 @@ async function send(){
     } else {
       const imgs = await callImagesAPI(text);
       popTyping();
-      pushMessage({
-        role:"assistant",
-        type:"image",
-        content:"Generated images:",
-        images: imgs,
-        time: nowStamp()
-      });
+      pushMessage({ role:"assistant", type:"image", content:"Generated images:", images: imgs, time: nowStamp() });
       setConn("good", "Connected");
       setStatus("Image generation completed.");
     }
@@ -1110,7 +1052,7 @@ async function send(){
     popTyping();
     setConn("bad", "Error");
     setStatus(e.message || String(e));
-    pushMessage({ role:"assistant", type:"text", content: "Error: " + (e.message || String(e)), time: nowStamp() });
+    pushMessage({ role:"assistant", type:"text", content:"Error: " + (e.message || String(e)), time: nowStamp() });
   } finally{
     busy = false;
     els.sendBtn.disabled = false;
@@ -1120,7 +1062,6 @@ async function send(){
 }
 
 els.sendBtn.addEventListener("click", send);
-
 els.input.addEventListener("keydown", (e)=>{
   if(e.key === "Enter" && !e.shiftKey){
     e.preventDefault();
@@ -1128,9 +1069,7 @@ els.input.addEventListener("keydown", (e)=>{
   }
 });
 
-els.saveKeyBtn.addEventListener("click", ()=>{
-  saveKey();
-});
+els.saveKeyBtn.addEventListener("click", saveKey);
 
 els.testBtn.addEventListener("click", async ()=>{
   const key = getKey();
@@ -1143,7 +1082,7 @@ els.testBtn.addEventListener("click", async ()=>{
   setStatus("Testing the Responses API…");
   try{
     pushTyping();
-    const out = await callResponsesAPI('Say exactly: "Arshiya Ai online." Then list 3 capabilities in bullets.');
+    const out = await callResponsesAPI('Say exactly: "Online." Then list 3 capabilities in bullets.');
     popTyping();
     pushMessage({ role:"assistant", type:"text", content: out, time: nowStamp() });
     setConn("good", "Connected");
@@ -1152,16 +1091,15 @@ els.testBtn.addEventListener("click", async ()=>{
     popTyping();
     setConn("bad", "Error");
     setStatus(e.message || String(e));
-    pushMessage({ role:"assistant", type:"text", content: "Test failed: " + (e.message || String(e)), time: nowStamp() });
+    pushMessage({ role:"assistant", type:"text", content:"Test failed: " + (e.message || String(e)), time: nowStamp() });
   }
 });
 
-// Persist preference changes
 [els.textModel, els.imageModel, els.imgSize, els.imgCount, els.imgQuality, els.imgBackground].forEach(el=>{
   el.addEventListener("change", persist);
 });
 
-// Init
+// init
 restore();
 syncModeUI();
 setConn(getKey() ? "warn" : "warn", getKey() ? "Key loaded" : "Not connected");
